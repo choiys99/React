@@ -67,10 +67,26 @@ function Header() {
   );
 }
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our Menu</h2>
-      <Pizza
+
+      {numPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzas.map((pizza) => (
+            // <Pizza name={pizza.name} photoName={pizza.photoName}></Pizza>
+            <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
+          ))}
+        </ul>
+      ) : (
+        <p>아직 메뉴 작업 중 입니다. 나중에 다시 오세요</p>
+      )}
+
+      {/* <Pizza
         name="Pizza Spinaci"
         ingredients="Tomato, mozarella, spinach, and ricotta cheese"
         photoName="pizzas/spinaci.jpg"
@@ -82,22 +98,25 @@ function Menu() {
         ingredients="Tomato, mushrooms"
         price={12}
         photoName="pizzas/funghi.jpg"
-      ></Pizza>
+      ></Pizza> */}
     </main>
   );
 }
 
-function Pizza(props) {
-  console.log(props);
+function Pizza({ pizzaObj }) {
+  // console.log(props);
+
+  if (pizzaObj.soldOut) return null;
+
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name} />
+    <li className="pizza">
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price + 3}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.price + 3}</span>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -111,10 +130,31 @@ function Footer() {
   // if (hour >= openHour && hour <= closeHour) alert("We're currently open!");
   // else alert("Sorry we're closed");
 
+  // if (!isOpen) return <p>CLOSED</p>;
+
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}We're currently open!
+      {/* {new Date().toLocaleTimeString()}We're currently open! */}
+      {isOpen ? (
+        <Order closeHour={closeHour} openHour={openHour} />
+      ) : (
+        <p>
+          환녕합니다. {openHour}:00 이며 {closeHour}: 00 입니다.
+        </p>
+      )}
     </footer>
+  );
+}
+
+function Order({ closeHour, openHour }) {
+  console.log(closeHour);
+  return (
+    <div className="order">
+      <p>
+        We're open until until {closeHour}:00. Come visit us or order online.
+      </p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
