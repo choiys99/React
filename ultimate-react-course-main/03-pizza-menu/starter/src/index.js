@@ -76,12 +76,21 @@ function Menu() {
       <h2>Our Menu</h2>
 
       {numPizzas > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            // <Pizza name={pizza.name} photoName={pizza.photoName}></Pizza>
-            <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
-          ))}
-        </ul>
+        <>
+          <p>
+            Bread with italian olive oil and rosemaryBread with italian olive
+            oil and rosemaryBread with italian olive oil and rosemary Bread with
+            italian olive oil and rosemaryBread with italian olive oil and
+            rosemary
+          </p>
+
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              // <Pizza name={pizza.name} photoName={pizza.photoName}></Pizza>
+              <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
+            ))}
+          </ul>
+        </>
       ) : (
         <p>아직 메뉴 작업 중 입니다. 나중에 다시 오세요</p>
       )}
@@ -106,15 +115,15 @@ function Menu() {
 function Pizza({ pizzaObj }) {
   // console.log(props);
 
-  if (pizzaObj.soldOut) return null;
+  // if (pizzaObj.soldOut) return null;
 
   return (
-    <li className="pizza">
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
       <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <div>
         <h3>{pizzaObj.name}</h3>
         <p>{pizzaObj.ingredients}</p>
-        <span>{pizzaObj.price + 3}</span>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
       </div>
     </li>
   );
