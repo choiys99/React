@@ -10,7 +10,13 @@ export default function App() {
   return (
     <div>
       <Steps />
-      <Steps />
+      <StepMessage step={1}>
+        <p>hi test 1</p>
+      </StepMessage>
+      <StepMessage step={2}>
+        <p>hi test 2</p>
+      </StepMessage>
+      {/* <Steps /> */}
     </div>
   );
 }
@@ -45,7 +51,16 @@ function Steps() {
             <div className={step >= 3 ? "active" : ""}>3</div>
           </div>
 
-          <StepMessage step={step}>{messages[step - 1]}</StepMessage>
+          <StepMessage step={step}>
+            {messages[step - 1]}
+            <button
+              bgColor="#e7e7e7"
+              textColor="#333"
+              onClick={() => alert(`방법을 알아보기${messages[step - 1]}`)}
+            >
+              눌러보세요~
+            </button>
+          </StepMessage>
 
           <div className="buttons">
             <Button bgColor="#7950f2" textColor="#fff" onClick={handlePrevious}>
