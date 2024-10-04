@@ -50,6 +50,19 @@ export default function App() {
     // js 접근방식때문에 ?. 사용 null 일경우에도 안전하게 가능
   }
 
+  function handleSplitBill(value) {
+    // console.log(value);
+    setFriends((friends) =>
+      friends.map((friend) =>
+        friend.id === selectedFriend.id
+          ? { ...friend, balance: friend.balance + value }
+          : friend
+      )
+    );
+
+    setSelectedFriend(null);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
@@ -65,7 +78,12 @@ export default function App() {
           {showAddFriend ? "Close" : "Add friend"}
         </Button>
       </div>
-      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} />}
+      {selectedFriend && (
+        <FormSplitBill
+          selectedFriend={selectedFriend}
+          onSplitBill={handleSplitBill}
+        />
+      )}
     </div>
   );
 }
@@ -159,13 +177,21 @@ function FormAddFriend({ onAddFriend }) {
   );
 }
 
-function FormSplitBill({ selectedFriend }) {
+function FormSplitBill({ selectedFriend, onSplitBill }) {
   const [bill, setBill] = useState("");
   const [paidByUser, setPaidByUser] = useState("");
+  const paidByFriend = bill ? bill - paidByUser : "";
   const [whoIsPaying, setWhoIsPaying] = useState("user");
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!bill || !paidByUser) return;
+    onSplitBill(whoIsPaying === "user" ? paidByFriend : -paidByUser);
+  }
+
   return (
-    <form className="form-split-bill">
+    <form className="form-split-bill" onSubmit={handleSubmit}>
       <h2>Split a bill with{selectedFriend.name}</h2>
 
       <label>Bill value</label>
@@ -179,11 +205,15 @@ function FormSplitBill({ selectedFriend }) {
       <input
         type="text"
         value={paidByUser}
-        onChange={(e) => setPaidByUser(Number(e.target.value))}
+        onChange={(e) =>
+          setPaidByUser(
+            Number(e.target.value) > bill ? paidByUser : Number(e.target.value)
+          )
+        }
       />
 
       <label>{selectedFriend.name}'s expense </label>
-      <input type="text" disabled />
+      <input type="text" disabled value={paidByFriend} />
 
       <label>Who is paying the bill </label>
       <select
