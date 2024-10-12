@@ -60,10 +60,23 @@ export default function App() {
         <Search />
         <NumResult movies={movies} />
       </NavBar>
+
       <Main>
+        {/* <Box element={<MovieLIst movies={movies} />}></Box>
+        <Box
+          element={
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMovieList watched={watched} />
+            </>
+          }
+        ></Box> */}
         <Box>
           <MovieLIst movies={movies} />
+          {/* 이건 children 사용해서 저장 
+          위에 elemet랑 결과는 같지만 다름 */}
         </Box>
+
         <Box>
           <>
             <WatchedSummary watched={watched} />
